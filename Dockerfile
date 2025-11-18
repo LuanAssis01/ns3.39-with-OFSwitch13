@@ -10,6 +10,12 @@ RUN apt-get update && apt-get install -y \
   python3 python3-dev python3-setuptools \
   cmake ninja-build git make pkg-config libtool libboost-dev \
   libc6-dev libc6-dev-i386 g++-multilib g++ \
+  software-properties-common \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN add-apt-repository universe && apt-get update && apt-get install -y \
+  ffmpeg \
+  gpac \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr
@@ -28,6 +34,10 @@ COPY evalvid /usr/ns-3-dev/contrib/evalvid
 
 RUN mkdir -p /usr/ns-3-dev/contrib/evalvid/bin
 COPY binarioevalvid/ /usr/ns-3-dev/contrib/evalvid/bin/
+
+RUN cp /usr/ns-3-dev/contrib/evalvid/bin/* /usr/local/bin/ && \
+    chmod +x /usr/local/bin/eg /usr/local/bin/etmp4 /usr/local/bin/hist \
+    /usr/local/bin/mos /usr/local/bin/mp4trace /usr/local/bin/psnr /usr/local/bin/vsgen
 
 RUN cp /usr/ns-3-dev/contrib/evalvid/st_highway_cif.st /usr/ns-3-dev/
 
